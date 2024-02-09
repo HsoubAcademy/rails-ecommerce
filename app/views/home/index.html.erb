@@ -1,0 +1,70 @@
+<div class="container image-container my-3">
+  <%= image_tag("main-image.jpg", :alt => "shop image", :class => "img-fluid mx-auto w-100") %>
+  <div class="image-caption">
+    <h1><%= t('home.title') %></h1>
+    <p><%= t('home.title2') %></p>
+  </div>
+</div>
+<div class="container my-3 text-center">
+  <form action="/#" method="get">
+    <select class="form-select d-inline-block my-1 mx-3" name="category">
+      <option selected disabled><%= t('age') %></option>
+      <% @categories.each do |category| %>
+        <option value="<%= category.id %>"><%= category.title %></option>
+      <% end %>
+    </select>
+    <select class="form-select d-inline-block my-1 mx-3" name="size">
+      <option selected disabled><%= t('size') %></option>
+      <option value="1"><%= t('home.small') %></option>
+      <option value="2"><%= t('home.medium') %></option>
+      <option value="3"><%= t('home.large') %></option>
+    </select>
+    <select class="form-select d-inline-block my-1 mx-3" name="price">
+      <option selected disabled><%= t('price') %></option>
+      <option value="1"><%= t('home.price1') %></option>
+      <option value="2"><%= t('home.price2') %></option>
+      <option value="3"><%= t('home.price3') %></option>
+    </select>
+    <input class="btn btn-primary" type="submit" value="<%= t('home.filter') %>" />
+  </form>
+</div>
+<div class="container my-3">
+  <div class="row justify-content-center">
+    <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel"  data-bs-interval="50000">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <% @products.each_with_index do |product, index| %>
+            <div class="card m-2 p-0 home-card">
+              <%= image_tag(product.image_url, :class => "card-img-top") %>
+              <div class="card-body">
+                <h3 class="card-title"><%= product.name %></h3>
+                <p class="card-text px-4 mb-1"><%= product.details %></p>
+                <small class="fw-bold fs-6"><%= t('age') %>: <%= @categories.find {|category| category.id == product.category_id }.title %></small>
+                <div class="mt-1 mb-3">
+                  <small class="mx-3 fw-bold fs-6"><%= t('price') %>: <%= product.price %>$</small>
+                  <small class="mx-3 fw-bold fs-6"><%= t('size') %>: <%= product.size == 1 ? "sm" : product.size == 2 ? "md" : "lg" %></small>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="(function addToCart(){
+                  location.href = '/products/<%= product.id %>' + location.search
+                })(window.data)"><%= t('home.show_details') %></button>
+                <%= button_to t('add_to_cart'), cart_add_to_cart_path, class: 'btn btn-primary', :form_class => "d-inline-block", method: :post, params: { product_id: product.id }, :onclick => "alert('#{t('product_added')}')" %>
+              </div>
+            </div>
+            <% if index % 6 == 5 %>
+              </div>
+              <div class="carousel-item">
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <% if @products.length() > 6 %>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>

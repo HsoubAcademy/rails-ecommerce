@@ -1,0 +1,55 @@
+<div class="container my-3">
+  <% if @products.length() == 0 %>
+   <h4><%= t('invoice.no_products') %></h4>
+  <% else %>
+  <div class="row">
+    <div class="col-md-7">
+      <% @products.each do |product| %>
+        <div class="card m-2 p-0" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <%= image_tag(product.image_url, :class => "img-fluid rounded-start") %>
+            </div>
+            <div class="col-md-8 card">
+              <div class="card-body">
+                <h5 class="card-title"><%= product.name %></h5>
+                <p class="card-text"><%= product.details %></p>
+              </div>
+              <div class="card-footer">
+                <p class="card-text"><%= t('price') %>: <%= product.price %>$</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-5">
+      <div class="card text-dark bg-light mb-3">
+        <div class="card-header"><%= t('cart.shopping_cart') %></div>
+        <div class="card-body bg-white">
+          <p class="card-text"><%= t('cart.shopping_cart') %>: <%= @products_count %></p>
+          <p class="card-text"><%= t('cart.products_total_price') %>: <%= @total_price %>$</p>
+        </div>
+        <form class="card p-3 border-0" id="payment-form">
+          <div class="mb-3">
+            <label for="card-element" class="form-label"><%= t('cart.your_name_on_card') %></label>
+            <input dir="ltr" class="form-control my-1" type="text" name="review_text" style="width: 100%;">
+          </div>
+          <div class="mb-3">
+            <label for="card-element" class="form-label"><%= t('cart.card_number') %></label>
+            <div dir="ltr" id="card-element"></div>
+          </div>
+          <button class="btn btn-primary" id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text"><%= t('cart.buy_now') %></span>
+          </button>
+          <p id="card-error" role="alert"></p>
+          <p class="result-message hidden">
+            <a><%= t('cart.payment_completed') %></a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>

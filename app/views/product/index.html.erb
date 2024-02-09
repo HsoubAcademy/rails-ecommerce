@@ -1,0 +1,36 @@
+<div class="container my-5">
+  <div class="row my-2">
+    <div class="col-md-5">
+      <%= image_tag(@product.image_url, :class => "img-fluid details-img") %>
+    </div>
+    <div class="col-md-7">
+      <span><%= @categories.find {|category| category.id == @product.category_id }.title %> - <%= @product.size == 1 ? "sm" : @product.size == 2 ? "md" : "lg" %></span>
+      <h3><%= @product.name %></h3>
+      <h2><%= @product.price %>$</h2>
+      <%= button_to t('add_to_cart'), cart_add_to_cart_path, class: 'btn btn-primary', :form_class => "add-inputs", method: :post, params: { product_id: @product.id } %>
+      <h5 class="mt-4 mb-1"><%= t('product.product_details') %></h5>
+      <p class="dummy-description mb-4">
+        <%= @product.details %>
+      </p>
+    </div>
+  </div>
+  <div class="row my-2">
+    <% if @product_reviews.length() != 0 %>
+      <h2><%= t('product.reviews') %></h2>
+    <% end %>
+    <% @product_reviews.each do |invoice| %>
+      <% invoice.each do |review| %>
+        <div class="card m-2" style="width: fit-content;">
+          <div class="rate">
+            <label class="<%= review.rating > 0 ? 'rate-color' : '' %>"></label>
+            <label class="<%= review.rating > 1 ? 'rate-color' : '' %>"></label>
+            <label class="<%= review.rating > 2 ? 'rate-color' : '' %>"></label>
+            <label class="<%= review.rating > 3 ? 'rate-color' : '' %>"></label>
+            <label class="<%= review.rating > 4 ? 'rate-color' : '' %>"></label>
+          </div>
+          <p class="my-1"><%= review.review_text %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="container cards-container my-3">
+  <div class="row">
+    <%= params[:message] %>
+  </div>
+  <% if @products.length() == 0 %>
+   <h4><%= t('invoice.no_products') %></h4>
+  <% end %>
+  <div class="row">
+    <% @products.each_with_index do |product, index| %>
+      <div class="card m-2 p-0" style="max-width: 720px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <%= image_tag(product.image_url, :class => "img-fluid rounded-start h-100 object-fit-cover") %>
+          </div>
+          <div class="col-md-8 card">
+            <div class="card-body">
+              <h5 class="card-title"><%= product.name %></h5>
+              <p class="card-text"><%= product.details %></p>
+            </div>
+            <div class="card-footer">
+              <form action="add_review" method="post">
+                <input class="form-control my-1" type="text" name="review_text" placeholder="ملاحظات على المنتج" style="width: 100%;">
+                <div class="d-flex my-1" style="width: 100%;">
+                  <input class="form-control" type="number" name="rating" placeholder="التقيم من خمس نجوم" min="0" max="5" style="text-align: end; margin-left: 2rem" required>
+                  <button class="btn btn-primary ms-auto" type="submit"><%= t('invoice.send') %></button>
+                </div>
+                <input type="hidden" name="invoice_id" value="<%= @invoice_ids[index] %>" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
